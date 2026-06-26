@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ಅಕ್ಷರ ದಾಸೋಹ (ಬಿಸಿ ಊಟ) ಲೆಕ್ಕಾಚಾರ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1, p {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .input-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            background: #eef2f3;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .input-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .results-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .results-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        .card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .card.full-width {
+            grid-column: span 2;
+        }
+        @media (max-width: 768px) {
+            .card.full-width {
+                grid-column: span 1;
+            }
+        }
+        .card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total-highlight {
+            font-weight: bold;
+            color: #d35400;
+            background-color: #fdf2e9;
+        }
+        .sub-header {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+        
+        /* Styles for Sadilvaru Table */
+        .sadilvaru-table th, .sadilvaru-table td {
+            border: 1px solid black;
+            text-align: center;
+        }
+        .sadilvaru-header {
+            background-color: #0000ff;
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .sadilvaru-sub-header {
+            background-color: #f9f9d6; 
+        }
+        .sadilvaru-total-row {
+            background-color: #fdf5e6;
+            font-weight: bold;
+        }
+
+        /* Menu Chart Styles */
+        .menu-chart-table th, .menu-chart-table td {
+            border: 2px solid #000;
+            padding: 12px;
+            color: #000;
+        }
+        .menu-chart-table th {
+            background-color: #f9f9d6;
+            font-size: 1.1em;
+        }
+        .menu-chart-table td {
+            background-color: #fcfce3;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ಪ್ರಧಾನ ಮಂತ್ರಿ ಪೋಷಣ್‌ ಶಕ್ತಿ ನಿರ್ಮಾಣ (ಅಕ್ಷರ ದಾಸೋಹ)</h1>
+    <p>ದೈನಂದಿನ ಆಹಾರ ಮತ್ತು ವೆಚ್ಚದ ಸ್ವಯಂಚಾಲಿತ ಲೆಕ್ಕಾಚಾರ ವ್ಯವಸ್ಥೆ <br> ರಚನೆ: ಮನೋಹರ್‌ ಆರ್‌ ಕೆ.ಜಿ.ಎಫ್‌ </p>
+
+    <div class="input-section">
+        <div class="input-group">
+            <label>1 ರಿಂದ 5ನೇ ತರಗತಿ ಹಾಜರಾತಿ:</label>
+            <input type="number" id="class1to5" placeholder="ವಿದ್ಯಾರ್ಥಿಗಳ ಸಂಖ್ಯೆ" oninput="calculateMidDayMeal()">
+        </div>
+        <div class="input-group">
+            <label>6 ರಿಂದ 10ನೇ ತರಗತಿ ಹಾಜರಾತಿ:</label>
+            <input type="number" id="class6to10" placeholder="ವಿದ್ಯಾರ್ಥಿಗಳ ಸಂಖ್ಯೆ" oninput="calculateMidDayMeal()">
+        </div>
+        <div class="input-group">
+            <label>ಮೊಟ್ಟೆ ಸ್ವೀಕರಿಸುವವರು:</label>
+            <input type="number" id="eggCount" placeholder="ಸಂಖ್ಯೆ" oninput="calculateMidDayMeal()">
+        </div>
+        <div class="input-group">
+            <label>ಬಾಳೆಹಣ್ಣು ಸ್ವೀಕರಿಸುವವರು:</label>
+            <input type="number" id="bananaCount" placeholder="ಸಂಖ್ಯೆ" oninput="calculateMidDayMeal()">
+        </div>
+    </div>
+
+    <div class="results-section">
+        <div class="card">
+            <h3>1 ರಿಂದ 5ನೇ ತರಗತಿ ವಿವರ</h3>
+            <table>
+                <tr><th>ವಸ್ತು</th><th>ಪ್ರಮಾಣ (ಗ್ರಾಂ ಗಳಲ್ಲಿ)</th><th>ವೆಚ್ಚ (ರೂ.)</th></tr>
+                <tr><td>ಅಕ್ಕಿ/ಗೋಧಿ (100g)</td><td><span id="r_rice1">0</span> ಗ್ರಾಂ</td><td>-</td></tr>
+                <tr><td>ಬೇಳೆ (20g)</td><td><span id="r_dal1">0</span> ಗ್ರಾಂ</td><td id="c_dal1">0.00</td></tr>
+                <tr><td>ಅಡುಗೆ ಎಣ್ಣೆ (5g)</td><td><span id="r_oil1">0</span> ಗ್ರಾಂ</td><td id="c_oil1">0.00</td></tr>
+                <tr><td>ಇಂಧನ</td><td>-</td><td id="c_fuel1">0.00</td></tr>
+                <tr class="total-highlight"><td>ಒಟ್ಟು ಆಹಾರ ವೆಚ್ಚ (ಬೇಳೆ, ಎಣ್ಣೆ, ಇಂಧನ)</td><td>-</td><td id="total_cost_partial1">0.00</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>6 ರಿಂದ 10ನೇ ತರಗತಿ ವಿವರ</h3>
+            <table>
+                <tr><th>ವಸ್ತು</th><th>ಪ್ರಮಾಣ (ಗ್ರಾಂ ಗಳಲ್ಲಿ)</th><th>ವೆಚ್ಚ (ರೂ.)</th></tr>
+                <tr><td>ಅಕ್ಕಿ/ಗೋಧಿ (150g)</td><td><span id="r_rice2">0</span> ಗ್ರಾಂ</td><td>-</td></tr>
+                <tr><td>ಬೇಳೆ (30g)</td><td><span id="r_dal2">0</span> ಗ್ರಾಂ</td><td id="c_dal2">0.00</td></tr>
+                <tr><td>ಅಡುಗೆ ಎಣ್ಣೆ (7.5g)</td><td><span id="r_oil2">0</span> ಗ್ರಾಂ</td><td id="c_oil2">0.00</td></tr>
+                <tr><td>ಇಂಧನ</td><td>-</td><td id="c_fuel2">0.00</td></tr>
+                <tr class="total-highlight"><td>ಒಟ್ಟು ಆಹಾರ ವೆಚ್ಚ (ಬೇಳೆ, ಎಣ್ಣೆ, ಇಂಧನ)</td><td>-</td><td id="total_cost_partial2">0.00</td></tr>
+            </table>
+        </div>
+
+        <div class="card full-width" style="padding: 0; border: 2px solid #000;">
+            <div class="sadilvaru-header">
+                ಪ್ರತಿ ದಿನ ಖರ್ಚು ಮಾಡುವ ಸಾದಿಲ್ವಾರು ಪರಿವರ್ತನಾ ವೆಚ್ಚದ ವಿವರ
+            </div>
+            <table class="sadilvaru-table" style="margin-top: 0; border: none;">
+                <tr class="sadilvaru-sub-header">
+                    <th colspan="3">1 ರಿಂದ 5ನೇ ತರಗತಿ</th>
+                    <th colspan="3">6 ರಿಂದ 10ನೇ ತರಗತಿ</th>
+                </tr>
+                <tr class="sadilvaru-sub-header">
+                    <th>ಆಹಾರ ಪದಾರ್ಥ</th>
+                    <th>ಒಟ್ಟು ಪ್ರಮಾಣ</th>
+                    <th>ಒಟ್ಟು ಪರಿವರ್ತನಾ ವೆಚ್ಚ</th>
+                    <th>ಆಹಾರ ಪದಾರ್ಥ</th>
+                    <th>ಒಟ್ಟು ಪ್ರಮಾಣ</th>
+                    <th>ಒಟ್ಟು ಪರಿವರ್ತನಾ ವೆಚ್ಚ</th>
+                </tr>
+                <tr>
+                    <td>ತರಕಾರಿ</td>
+                    <td><span id="sa_veg_q1">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_veg_c1">0.00</span> ಪೈಸೆ</td>
+                    <td>ತರಕಾರಿ</td>
+                    <td><span id="sa_veg_q2">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_veg_c2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+                <tr>
+                    <td>ಸಾಂಬಾರು ಪದಾರ್ಥ</td>
+                    <td>-</td>
+                    <td><span id="sa_sam_c1">0.00</span> ಪೈಸೆ</td>
+                    <td>ಸಾಂಬಾರು ಪದಾರ್ಥ</td>
+                    <td>-</td>
+                    <td><span id="sa_sam_c2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+                <tr>
+                    <td>ಉಪ್ಪು</td>
+                    <td><span id="sa_salt_q1">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_salt_c1">0.00</span> ಪೈಸೆ</td>
+                    <td>ಉಪ್ಪು</td>
+                    <td><span id="sa_salt_q2">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_salt_c2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+                <tr class="sadilvaru-total-row">
+                    <td colspan="2">ಒಟ್ಟು</td>
+                    <td><span id="sa_sub1">0.00</span> ಪೈಸೆ</td>
+                    <td colspan="2">ಒಟ್ಟು</td>
+                    <td><span id="sa_sub2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+                <tr>
+                    <td>ಕ್ಷೀರಭಾಗ್ಯ ಯೋಜನೆ<br>ಸಕ್ಕರೆಯ ಖರ್ಚು</td>
+                    <td>ಸಕ್ಕರೆ<br><span id="sa_sug_q1">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_sug_c1">0.00</span> ಪೈಸೆ</td>
+                    <td>ಕ್ಷೀರಭಾಗ್ಯ ಯೋಜನೆ<br>ಸಕ್ಕರೆಯ ಖರ್ಚು</td>
+                    <td>ಸಕ್ಕರೆ<br><span id="sa_sug_q2">0</span> ಗ್ರಾಂ.</td>
+                    <td><span id="sa_sug_c2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+                <tr class="sadilvaru-total-row">
+                    <td colspan="2">ಒಟ್ಟು</td>
+                    <td><span id="sa_tot1">0.00</span> ಪೈಸೆ</td>
+                    <td colspan="2">ಒಟ್ಟು</td>
+                    <td><span id="sa_tot2">0.00</span> ಪೈಸೆ</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card full-width" style="background-color: #e3f2fd; border-color: #90caf9;">
+            <h3 style="border-bottom-color: #1976d2; color: #1565c0;">1 ರಿಂದ 10ನೇ ತರಗತಿ ಒಟ್ಟು ಸಾಮಗ್ರಿಗಳ ವಿವರ</h3>
+            <table>
+                <tr><th>ವಸ್ತು</th><th>ಒಟ್ಟು ಪ್ರಮಾಣ (ಕೆ.ಜಿ ಗಳಲ್ಲಿ)</th><th>ಒಟ್ಟು ವೆಚ್ಚ (ರೂ.)</th></tr>
+                <tr><td>ಒಟ್ಟು ಅಕ್ಕಿ/ಗೋಧಿ</td><td><span id="t_rice">0.000</span> ಕೆ.ಜಿ</td><td>-</td></tr>
+                <tr><td>ಒಟ್ಟು ಬೇಳೆ</td><td><span id="t_dal">0.000</span> ಕೆ.ಜಿ</td><td id="t_c_dal">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ಅಡುಗೆ ಎಣ್ಣೆ</td><td><span id="t_oil">0.000</span> ಕೆ.ಜಿ</td><td id="t_c_oil">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ತರಕಾರಿ</td><td><span id="t_veg">0.000</span> ಕೆ.ಜಿ</td><td id="t_c_veg">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ಸಾಂಬಾರು ಪದಾರ್ಥ</td><td>-</td><td id="t_c_sambar">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ಉಪ್ಪು</td><td><span id="t_salt">0.000</span> ಕೆ.ಜಿ</td><td id="t_c_salt">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ಇಂಧನ</td><td>-</td><td id="t_c_fuel">0.00</td></tr>
+                <tr><td>ಒಟ್ಟು ಊಟದ ಸಕ್ಕರೆ</td><td><span id="t_sugar">0.000</span> ಕೆ.ಜಿ</td><td id="t_c_sugar">0.00</td></tr>
+                <tr class="total-highlight"><td>ಒಟ್ಟು ಪರಿವರ್ತನಾ ವೆಚ್ಚ (1 ರಿಂದ 10)</td><td>-</td><td id="total_conv_cost">0.00</td></tr>
+            </table>
+        </div>
+
+        <div class="card full-width" style="border-color: #f39c12;">
+            <h3 style="border-bottom-color: #f39c12; color: #d35400;">1 ರಿಂದ 10ನೇ ತರಗತಿಗೆ ಪೂರಕ ಪೌಷ್ಟಿಕಾಂಶ</h3>
+            <table>
+                <tr>
+                    <th colspan="2">ವೆಚ್ಚದ ಬಾಬು</th>
+                    <th>ಒಟ್ಟು ವೆಚ್ಚ (ರೂ.)</th>
+                </tr>
+                
+                <tr class="sub-header">
+                    <td>ಎ</td>
+                    <td>ಮೊಟ್ಟೆ (<span id="r_eggCount">0</span> ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>ಮೊಟ್ಟೆ (ಪ್ರಮಾಣ-1) ಖರೀದಿಗೆ (ರೂ. 5.00 ಪೈಸೆ)</td>
+                    <td id="c_egg_buy">0.00</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>ಸಾಗಾಣಿಕೆ ವೆಚ್ಚ (ರೂ. 0.20 ಪೈಸೆ)</td>
+                    <td id="c_egg_trans">0.00</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>ಮೊಟ್ಟೆ ಬೇಯಿಸಿ ಸುಲಿಯುವ ಕೂಲಿ ವೆಚ್ಚ (ರೂ. 0.30 ಪೈಸೆ)</td>
+                    <td id="c_egg_labor">0.00</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>ಮೊಟ್ಟೆ ಬೇಯಿಸಲು ಇಂಧನ ವೆಚ್ಚ (ರೂ. 0.50 ಪೈಸೆ)</td>
+                    <td id="c_egg_fuel">0.00</td>
+                </tr>
+                <tr class="total-highlight">
+                    <td colspan="2" style="text-align: right;">ಮೊಟ್ಟೆ ಒಟ್ಟು ಘಟಕ ವೆಚ್ಚ:</td>
+                    <td id="c_egg_total">0.00</td>
+                </tr>
+
+                <tr class="sub-header">
+                    <td>ಬಿ</td>
+                    <td>ಬಾಳೆಹಣ್ಣು (ಮೊಟ್ಟೆ ಸೇವಿಸದ ಮಕ್ಕಳಿಗೆ) (<span id="r_bananaCount">0</span> ವಿದ್ಯಾರ್ಥಿಗಳಿಗೆ)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>ಬಾಳೆಹಣ್ಣು (ಪ್ರಮಾಣ-2) (ರೂ. 5.80 ಪೈಸೆ)</td>
+                    <td id="c_ban_buy">0.00</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>ಸಾಗಾಣಿಕೆ ವೆಚ್ಚ (ರೂ. 0.20 ಪೈಸೆ)</td>
+                    <td id="c_ban_trans">0.00</td>
+                </tr>
+                <tr class="total-highlight">
+                    <td colspan="2" style="text-align: right;">ಬಾಳೆಹಣ್ಣು ಒಟ್ಟು ಘಟಕ ವೆಚ್ಚ:</td>
+                    <td id="c_ban_total">0.00</td>
+                </tr>
+                <tr class="total-highlight" style="background-color: #f9e79f;">
+                    <td colspan="2" style="text-align: right; color: #b7950b;">ಪೂರಕ ಪೌಷ್ಟಿಕಾಂಶದ ಒಟ್ಟು ಮೊತ್ತ:</td>
+                    <td id="total_supp_cost" style="color: #b7950b;">0.00</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card full-width">
+            <h3>ಕ್ಷೀರ ಭಾಗ್ಯ ಯೋಜನೆ (ಒಟ್ಟು)</h3>
+            <table style="width: 50%; margin: 0 auto;">
+                <tr><th>ವಸ್ತು (ಪ್ರತಿ ಮಗುವಿಗೆ)</th><th>ಒಟ್ಟು ಪ್ರಮಾಣ (ಗ್ರಾಂ ಗಳಲ್ಲಿ)</th></tr>
+                <tr><td>ಹಾಲಿನ ಪುಡಿ (18g)</td><td><span id="r_milkPowder">0</span> ಗ್ರಾಂ</td></tr>
+                <tr><td>ಹಾಲಿನ ಸಕ್ಕರೆ (10g)</td><td><span id="r_totalSugar">0</span> ಗ್ರಾಂ</td></tr>
+                <tr><td>ರಾಗಿ ಮಾಲ್ಟ್ (5g)</td><td><span id="r_ragiMalt">0</span> ಗ್ರಾಂ</td></tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top: 20px; text-align: center; border-color: #27ae60; background-color: #eafaf1;">
+        <h2 style="color: #27ae60; margin: 10px 0;">ದಿನದ ಒಟ್ಟು ಖರ್ಚು: ರೂ. <span id="grand_total">0.00</span></h2>
+    </div>
+
+    <div class="card" style="margin-top: 30px; border: 3px solid #d32f2f; padding: 0; border-radius: 0; overflow: hidden;">
+        <div style="background-color: #0000ff; color: white; text-align: center; padding: 15px; font-size: 1.8em; font-weight: bold;">
+            ಸೂಚಿತ ಆಹಾರ ಪಟ್ಟಿ (ಮೆನುಚಾರ್ಟ್)
+        </div>
+        <table class="menu-chart-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <tr>
+                <th style="width: 10%; text-align: center;">ಕ್ರ.ಸಂ.</th>
+                <th style="width: 25%;">ವಾರ</th>
+                <th>ಸೂಚಿತ ಆಹಾರ</th>
+            </tr>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>ಸೋಮವಾರ</td>
+                <td>ಅನ್ನ-ಸಾಂಬಾರು</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">2</td>
+                <td>ಮಂಗಳವಾರ</td>
+                <td>ರೈಸ್ ಪಲಾವ್/ಟೊಮೆಟೋ ಬಾತ್/ದಾಲ್ ತೊವ್ವೆ</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">3</td>
+                <td>ಬುಧವಾರ</td>
+                <td>ಅನ್ನ-ಸಾಂಬಾರು</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">4</td>
+                <td>ಗುರುವಾರ</td>
+                <td>ಅನ್ನ-ಸಾಂಬಾರು</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">5</td>
+                <td>ಶುಕ್ರವಾರ</td>
+                <td>ಬಿಸಿ ಬೇಳೆ ಬಾತ್</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">6</td>
+                <td>ಶನಿವಾರ</td>
+                <td>ಗೋಧಿ ಉತ್ಪನ್ನಗಳಿಂದ ತಯಾರಿಸಿದ ಆಹಾರ/ಉಪ್ಪಿಟ್ಟು</td>
+            </tr>
+        </table>
+        <div style="background-color: #f9f9d6; padding: 15px; color: #d32f2f; font-weight: bold; font-size: 1em; text-align: center; border-top: 2px solid #000;">
+            ವಾರದಲ್ಲಿ 5 ದಿನ ಮಕ್ಕಳಿಗೆ 18 ಗ್ರಾಂ. ಹಾಲಿನ ಪುಡಿ + 10 ಗ್ರಾಂ. ಸಕ್ಕರೆ ಒಟ್ಟು 150 ಮಿ.ಲೀ. ಹಾಲು<br>
+            ಪ್ರಾರ್ಥನೆ ನಂತರ ತರಗತಿ ಕೊಠಡಿಯ ಒಳಗೆ ಹೋಗುವ ಪೂರ್ವದಲ್ಲಿ ಮಕ್ಕಳಿಗೆ ವಿತರಿಸುವುದು.
+        </div>
+    </div>
+
+<div style="text-align:center;margin:25px 0;">
+<button onclick="window.print()" style="background:linear-gradient(135deg,#ff9800,#f44336);color:#fff;border:none;padding:14px 30px;font-size:18px;border-radius:30px;cursor:pointer;box-shadow:0 6px 15px rgba(0,0,0,.25)">🖨️ ಪ್ರಿಂಟ್</button>
+</div>
+<style>
+body{background:linear-gradient(135deg,#eef7ff,#fff7e6);}
+.container{border-radius:20px;box-shadow:0 10px 35px rgba(0,0,0,.15)}
+.card{border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+input[type=number]{border-radius:12px}
+@media print{button{display:none}}
+</style>
+</div>
+
+<script>
+    function formatCurrency(amount) {
+        return amount.toFixed(2);
+    }
+
+    function calculateMidDayMeal() {
+        let count1 = Number(document.getElementById('class1to5').value) || 0;
+        let count2 = Number(document.getElementById('class6to10').value) || 0;
+        let eggCount = Number(document.getElementById('eggCount').value) || 0;
+        let bananaCount = Number(document.getElementById('bananaCount').value) || 0;
+
+        let totalStudents = count1 + count2;
+
+        // --- Class 1 to 5 ---
+        let rice1 = count1 * 100;
+        let dal1 = count1 * 20;
+        let oil1 = count1 * 5; 
+        let veg1 = count1 * 50;
+        let salt1 = count1 * 2;
+        let sugar1 = count1 * 10;
+        
+        let c_dal1 = count1 * 2.52;
+        let c_oil1 = count1 * 0.77;
+        let c_veg1 = count1 * 1.80;
+        let c_sambar1 = count1 * 0.55;
+        let c_salt1 = count1 * 0.04;
+        let c_fuel1 = count1 * 1.10;
+        let c_sugar1 = count1 * 0.32;
+
+        let subtotal1_sadilvaru = c_veg1 + c_sambar1 + c_salt1;
+        let total1_sadilvaru = subtotal1_sadilvaru + c_sugar1;
+        
+        document.getElementById('r_rice1').innerText = rice1;
+        document.getElementById('r_dal1').innerText = dal1;
+        document.getElementById('r_oil1').innerText = oil1;
+        document.getElementById('c_dal1').innerText = formatCurrency(c_dal1);
+        document.getElementById('c_oil1').innerText = formatCurrency(c_oil1);
+        document.getElementById('c_fuel1').innerText = formatCurrency(c_fuel1);
+        document.getElementById('total_cost_partial1').innerText = formatCurrency(c_dal1 + c_oil1 + c_fuel1);
+
+        // --- Update Sadilvaru Table (1 to 5) ---
+        document.getElementById('sa_veg_q1').innerText = veg1;
+        document.getElementById('sa_veg_c1').innerText = formatCurrency(c_veg1);
+        document.getElementById('sa_sam_c1').innerText = formatCurrency(c_sambar1);
+        document.getElementById('sa_salt_q1').innerText = salt1;
+        document.getElementById('sa_salt_c1').innerText = formatCurrency(c_salt1);
+        document.getElementById('sa_sub1').innerText = formatCurrency(subtotal1_sadilvaru);
+        document.getElementById('sa_sug_q1').innerText = sugar1;
+        document.getElementById('sa_sug_c1').innerText = formatCurrency(c_sugar1);
+        document.getElementById('sa_tot1').innerText = formatCurrency(total1_sadilvaru);
+
+        // --- Class 6 to 10 ---
+        let rice2 = count2 * 150;
+        let dal2 = count2 * 30;
+        let oil2 = count2 * 7.5;
+        let veg2 = count2 * 75;
+        let salt2 = count2 * 4;
+        let sugar2 = count2 * 10;
+
+        let c_dal2 = count2 * 3.78;
+        let c_oil2 = count2 * 1.15;
+        let c_veg2 = count2 * 2.70;
+        let c_sambar2 = count2 * 0.77;
+        let c_salt2 = count2 * 0.08;
+        let c_fuel2 = count2 * 1.69;
+        let c_sugar2 = count2 * 0.32;
+
+        let subtotal2_sadilvaru = c_veg2 + c_sambar2 + c_salt2;
+        let total2_sadilvaru = subtotal2_sadilvaru + c_sugar2;
+
+        document.getElementById('r_rice2').innerText = rice2;
+        document.getElementById('r_dal2').innerText = dal2;
+        document.getElementById('r_oil2').innerText = oil2;
+        document.getElementById('c_dal2').innerText = formatCurrency(c_dal2);
+        document.getElementById('c_oil2').innerText = formatCurrency(c_oil2);
+        document.getElementById('c_fuel2').innerText = formatCurrency(c_fuel2);
+        document.getElementById('total_cost_partial2').innerText = formatCurrency(c_dal2 + c_oil2 + c_fuel2);
+
+        // --- Update Sadilvaru Table (6 to 10) ---
+        document.getElementById('sa_veg_q2').innerText = veg2;
+        document.getElementById('sa_veg_c2').innerText = formatCurrency(c_veg2);
+        document.getElementById('sa_sam_c2').innerText = formatCurrency(c_sambar2);
+        document.getElementById('sa_salt_q2').innerText = salt2;
+        document.getElementById('sa_salt_c2').innerText = formatCurrency(c_salt2);
+        document.getElementById('sa_sub2').innerText = formatCurrency(subtotal2_sadilvaru);
+        document.getElementById('sa_sug_q2').innerText = sugar2;
+        document.getElementById('sa_sug_c2').innerText = formatCurrency(c_sugar2);
+        document.getElementById('sa_tot2').innerText = formatCurrency(total2_sadilvaru);
+
+        // --- Combined Totals (1 to 10) in KG ---
+        document.getElementById('t_rice').innerText = ((rice1 + rice2) / 1000).toFixed(3);
+        document.getElementById('t_dal').innerText = ((dal1 + dal2) / 1000).toFixed(3);
+        document.getElementById('t_oil').innerText = ((oil1 + oil2) / 1000).toFixed(3);
+        document.getElementById('t_veg').innerText = ((veg1 + veg2) / 1000).toFixed(3);
+        document.getElementById('t_salt').innerText = ((salt1 + salt2) / 1000).toFixed(3);
+        document.getElementById('t_sugar').innerText = ((sugar1 + sugar2) / 1000).toFixed(3);
+
+        document.getElementById('t_c_dal').innerText = formatCurrency(c_dal1 + c_dal2);
+        document.getElementById('t_c_oil').innerText = formatCurrency(c_oil1 + c_oil2);
+        document.getElementById('t_c_veg').innerText = formatCurrency(c_veg1 + c_veg2);
+        document.getElementById('t_c_sambar').innerText = formatCurrency(c_sambar1 + c_sambar2);
+        document.getElementById('t_c_salt').innerText = formatCurrency(c_salt1 + c_salt2);
+        document.getElementById('t_c_fuel').innerText = formatCurrency(c_fuel1 + c_fuel2);
+        document.getElementById('t_c_sugar').innerText = formatCurrency(c_sugar1 + c_sugar2);
+        
+        let totalConvCost = (c_dal1 + c_oil1 + c_veg1 + c_sambar1 + c_salt1 + c_fuel1 + c_sugar1) + 
+                            (c_dal2 + c_oil2 + c_veg2 + c_sambar2 + c_salt2 + c_fuel2 + c_sugar2);
+        document.getElementById('total_conv_cost').innerText = formatCurrency(totalConvCost);
+
+        // --- Milk & Ragi Malt Logic ---
+        document.getElementById('r_milkPowder').innerText = totalStudents * 18;
+        document.getElementById('r_totalSugar').innerText = totalStudents * 10;
+        document.getElementById('r_ragiMalt').innerText = totalStudents * 5;
+
+        // --- Detailed Supplementary Nutrition (Egg & Banana) ---
+        document.getElementById('r_eggCount').innerText = eggCount;
+        let eggBuy = eggCount * 5.00;
+        let eggTrans = eggCount * 0.20;
+        let eggLabor = eggCount * 0.30;
+        let eggFuel = eggCount * 0.50;
+        let eggTotal = eggCount * 6.00;
+
+        document.getElementById('c_egg_buy').innerText = formatCurrency(eggBuy);
+        document.getElementById('c_egg_trans').innerText = formatCurrency(eggTrans);
+        document.getElementById('c_egg_labor').innerText = formatCurrency(eggLabor);
+        document.getElementById('c_egg_fuel').innerText = formatCurrency(eggFuel);
+        document.getElementById('c_egg_total').innerText = formatCurrency(eggTotal);
+
+        document.getElementById('r_bananaCount').innerText = bananaCount;
+        let banBuy = bananaCount * 5.80;
+        let banTrans = bananaCount * 0.20;
+        let banTotal = bananaCount * 6.00;
+
+        document.getElementById('c_ban_buy').innerText = formatCurrency(banBuy);
+        document.getElementById('c_ban_trans').innerText = formatCurrency(banTrans);
+        document.getElementById('c_ban_total').innerText = formatCurrency(banTotal);
+
+        let totalSuppCost = eggTotal + banTotal;
+        document.getElementById('total_supp_cost').innerText = formatCurrency(totalSuppCost);
+
+        // --- Grand Total ---
+        let grandTotal = totalConvCost + totalSuppCost;
+        document.getElementById('grand_total').innerText = formatCurrency(grandTotal);
+    }
+</script>
+
+</body>
+</html>
